@@ -9,12 +9,20 @@
     [TestFixture]
     public class HeatingTimer_Test
     {
+        bool eventRaised;
+
+        [SetUp]
+        public void Setup()
+        {
+            eventRaised = false;
+        }
+
         [Test]
         public void Test_ThatMyEventIsRaised()
         {
             // Arrange
-            HeatingTimer heatingTimer = new HeatingTimer(TimeSpan.FromMilliseconds(1));
-            bool eventRaised = false;
+            double milisecondsInterval = 1;
+            HeatingTimer heatingTimer = new HeatingTimer(TimeSpan.FromMilliseconds(milisecondsInterval));
             
             heatingTimer.TimeElapsed += delegate (object sender, EventArgs e)
             {
@@ -34,21 +42,17 @@
             // Arrange
             double milisecondsInterval = 1000;
             HeatingTimer heatingTimer = new HeatingTimer(TimeSpan.FromMilliseconds(milisecondsInterval));
-            bool eventRaised = false;
 
             Stopwatch stopwatch = new Stopwatch();
-            DateTime test2 = new DateTime();
 
             heatingTimer.TimeElapsed += delegate (object sender, EventArgs e)
             {
                 eventRaised = true;
                 stopwatch.Stop();
-                test2 = DateTime.Now;
             };
 
             // Act
             stopwatch.Start();
-            var test1 = DateTime.Now;
             heatingTimer.Start();
 
             Thread.Sleep((int)milisecondsInterval / 2);
@@ -66,7 +70,6 @@
             // Arrange
             double milisecondsInterval = 1000;
             HeatingTimer heatingTimer = new HeatingTimer(TimeSpan.FromMilliseconds(milisecondsInterval));
-            bool eventRaised = false;
 
             Stopwatch stopwatch = new Stopwatch();
 
