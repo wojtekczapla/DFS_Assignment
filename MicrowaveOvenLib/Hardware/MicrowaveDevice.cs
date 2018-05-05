@@ -9,7 +9,17 @@
         private readonly IHeatingTimer heatingTimer;
         private bool heating = false;
 
-        public bool Heating => heating;
+        public bool Heating
+        {
+            get
+            {
+                return this.heating;
+            }
+            private set
+            {
+                this.heating = value;
+            }
+        }
 
         public MicrowaveDevice(IMicrowaveOvenHW microwaveOvenHW, IHeatingTimer heatingTimer)
         {
@@ -32,7 +42,7 @@
 
         private void MicrowaveOvenHardwareUnit_DoorOpenChanged(bool doorOpen)
         {
-            if(doorOpen && this.heating)
+            if(doorOpen && this.Heating)
                 this.microwaveOvenHardwareUnit.TurnOffHeater();
         }
 
@@ -43,13 +53,13 @@
 
         private void TurnOnHeater()
         {
-            if(this.heating)
+            if(this.Heating)
                 this.heatingTimer.Extend();
             else
             {
                 this.heatingTimer.Start();
                 this.microwaveOvenHardwareUnit.TurnOnHeater();
-                this.heating = true;
+                this.Heating = true;
             }
         }
     }

@@ -12,6 +12,7 @@
         [Test]
         public void Test_ThatMyEventIsRaised()
         {
+            // Arrange
             HeatingTimer heatingTimer = new HeatingTimer(TimeSpan.FromMilliseconds(1));
             bool eventRaised = false;
             
@@ -20,17 +21,19 @@
                 eventRaised = true;
             };
 
+            // Act
             heatingTimer.Start();
 
             Thread.Sleep(20);
-            Thread.Yield();
             Assert.AreEqual(true, eventRaised);
         }
 
-        [TestCase(50)]
-        public void Test_ThatMyEventRaisedAfterExtendedTime(double interval)
+        [Test]
+        public void Test_ThatMyEventRaisedAfterExtendedTime()
         {
-            HeatingTimer heatingTimer = new HeatingTimer(TimeSpan.FromMilliseconds(interval));
+            // Arrange
+            double milisecondsInterval = 1000;
+            HeatingTimer heatingTimer = new HeatingTimer(TimeSpan.FromMilliseconds(milisecondsInterval));
             bool eventRaised = false;
 
             Stopwatch stopwatch = new Stopwatch();
@@ -43,16 +46,48 @@
                 test2 = DateTime.Now;
             };
 
+            // Act
             stopwatch.Start();
             var test1 = DateTime.Now;
             heatingTimer.Start();
 
-            Thread.Sleep((int)interval/2);
+            Thread.Sleep((int)milisecondsInterval / 2);
             heatingTimer.Extend();
-            Thread.Sleep((int)interval * 2);
-            Assert.AreEqual(true, eventRaised);
+            heatingTimer.Extend();
+            Thread.Sleep((int)milisecondsInterval * 3);
 
-            TimeSpan ts = new TimeSpan((long)(test2.Ticks - test1.Ticks));
+            // Assert
+            Assert.AreEqual(true, eventRaised);
+        }
+
+        [Test]
+        public void Test_ThatMyEventRaisedAfterExtendedTimeInTimeGreaterThanExtension()
+        {
+            // Arrange
+            double milisecondsInterval = 1000;
+            HeatingTimer heatingTimer = new HeatingTimer(TimeSpan.FromMilliseconds(milisecondsInterval));
+            bool eventRaised = false;
+
+            Stopwatch stopwatch = new Stopwatch();
+
+            heatingTimer.TimeElapsed += delegate (object sender, EventArgs e)
+            {
+                eventRaised = true;
+                stopwatch.Stop();
+            };
+
+            // Act
+            stopwatch.Start();
+            heatingTimer.Start();
+
+            Thread.Sleep((int)milisecondsInterval / 2);
+            heatingTimer.Extend();
+            Thread.Sleep((int)milisecondsInterval / 2);
+            heatingTimer.Extend();
+            Thread.Sleep((int)milisecondsInterval * 3);
+
+            // Assert
+            Assert.GreaterOrEqual(stopwatch.Elapsed.TotalMilliseconds, 3000);
         }
     }
 }

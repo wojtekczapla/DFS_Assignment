@@ -16,18 +16,26 @@
         }
 
         [Test]
-        public void IsLightOnAfterOn()
+        public void IsLightOnAfterOnFunction()
         {
+            // Arrange
+
+            // Act
             light.On();
 
+            // Assert
             Assert.IsTrue(light.LightOn);
         }
 
         [Test]
-        public void IsLightOffAfterOff()
+        public void IsLightOffAfterOffFunction()
         {
+            // Arrange
+
+            // Act
             light.Off();
 
+            // Assert
             Assert.IsFalse(light.LightOn);
         }
     }

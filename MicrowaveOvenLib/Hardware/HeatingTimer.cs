@@ -10,6 +10,7 @@
         private readonly TimeSpan intervalTime;
         private TimeSpan timeSpanExtension;
         private Timer localTimer;
+        Stopwatch sw = new Stopwatch();
 
         public event EventHandler TimeElapsed;
 
@@ -22,14 +23,17 @@
 
         public void Start()
         {
-            this.timeSpanExtension = new TimeSpan();
+            this.timeSpanExtension = intervalTime;
             this.localTimer.Change(intervalTime, intervalTime);
+            sw.Start();
         }
 
         public void Extend()
         {
-            this.timeSpanExtension += intervalTime;
+            sw.Stop();
+            this.timeSpanExtension += (intervalTime- TimeSpan.FromMilliseconds(sw.Elapsed.TotalMilliseconds));
             this.localTimer.Change(timeSpanExtension, timeSpanExtension);
+            sw.Restart();
         }
 
         private void Reset()
