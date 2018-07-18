@@ -6,7 +6,13 @@
     {
         private bool lightOn = false;
 
-        public bool LightOn => this.lightOn;
+        public bool LightOn
+        {
+            get
+            {
+                return this.lightOn;
+            }
+        }
 
         public void Off() => this.lightOn = false;
 
