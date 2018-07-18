@@ -8,7 +8,13 @@
         IMicrowaveOvenHW microwaveOvenHardwareUnit;
         ILight ovenLight;
 
-        public ILight Light => ovenLight;
+        public ILight Light
+        {
+            get
+            {
+                return ovenLight;
+            }
+        }
 
         public Oven(IMicrowaveOvenHW microwaveOvenHW, ILight light)
         {
