@@ -14,8 +14,14 @@
             }
         }
 
-        public void Off() => this.lightOn = false;
+        public void Off()
+        {
+            this.lightOn = false;
+        }
 
-        public void On() => this.lightOn = true;
+        public void On()
+        {
+            this.lightOn = true;
+        }
     }
 }
