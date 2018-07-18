@@ -32,6 +32,18 @@
             this.heatingTimer.TimeElapsed += HeatingTimer_TimeElapsed;
         }
 
+        private void TurnOnHeater()
+        {
+            if (this.Heating)
+                this.heatingTimer.Extend();
+            else
+            {
+                this.heatingTimer.Start();
+                this.microwaveOvenHardwareUnit.TurnOnHeater();
+                this.Heating = true;
+            }
+        }
+
         private void MicrowaveOvenHardwareUnit_StartButtonPressed(object sender, EventArgs e)
         {
             if (!this.microwaveOvenHardwareUnit.DoorOpen)
@@ -49,18 +61,6 @@
         private void HeatingTimer_TimeElapsed(object sender, EventArgs e)
         {
             this.microwaveOvenHardwareUnit.TurnOffHeater();
-        }
-
-        private void TurnOnHeater()
-        {
-            if(this.Heating)
-                this.heatingTimer.Extend();
-            else
-            {
-                this.heatingTimer.Start();
-                this.microwaveOvenHardwareUnit.TurnOnHeater();
-                this.Heating = true;
-            }
         }
     }
 }
