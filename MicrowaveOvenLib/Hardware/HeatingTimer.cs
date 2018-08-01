@@ -49,6 +49,7 @@
         private void TimerElapsed(object state)
         {
             this.Reset();
+
             this.OnTimeElapsed();
         }
     }
