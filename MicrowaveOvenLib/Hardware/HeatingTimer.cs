@@ -43,8 +43,7 @@
 
         protected virtual void OnTimeElapsed()
         {
-            if(this.TimeElapsed != null)
-                this.TimeElapsed.Invoke(this, null);
+            this.TimeElapsed?.Invoke(this, null);
         }
 
         private void TimerElapsed(object state)
